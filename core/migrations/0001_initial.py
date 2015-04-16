@@ -11,6 +11,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Affinity',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Brand',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -25,11 +32,17 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('last_mod', models.DateTimeField(auto_now=True)),
+                ('affinities', models.ManyToManyField(to='core.Brand', through='core.Affinity')),
             ],
         ),
         migrations.AddField(
-            model_name='brand',
-            name='profiles',
-            field=models.ManyToManyField(related_name='brands', to='core.UserProfile'),
+            model_name='affinity',
+            name='brand_id',
+            field=models.ForeignKey(to='core.Brand'),
+        ),
+        migrations.AddField(
+            model_name='affinity',
+            name='profile_id',
+            field=models.ForeignKey(to='core.UserProfile'),
         ),
     ]
