@@ -9,9 +9,11 @@ class ProfileTests(APITestCase):
         """
         Ensure we can create a new profile object.
         """
-        profiles = Profile.objects.count()
+        Profile.objects.all().delete()
         response = self.client.post(reverse('profile-list'), format='json')
-        new_profiles = Profile.objects.count()
+        profiles = Profile.objects.all()
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(profiles + 1, new_profiles)
+        self.assertEqual(len(profiles), 1)
+        self.assertIsNotNone(profiles[0].id)
+        self.assertIsNotNone(profiles[0].created)
 

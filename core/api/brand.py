@@ -1,7 +1,5 @@
-import logging
 from rest_framework import viewsets, serializers, mixins
 from core.models import Brand
-logger = logging.getLogger(__name__)
 
 
 class BrandSerializer(serializers.ModelSerializer):
