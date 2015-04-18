@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class UserProfile(models.Model):
+class Profile(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_mod = models.DateTimeField(auto_now=True)
     affinities = models.ManyToManyField('Brand', through='Affinity')
@@ -14,8 +14,11 @@ class Brand(models.Model):
 
 
 class Affinity(models.Model):
-    profile = models.ForeignKey('UserProfile')
+    profile = models.ForeignKey('Profile')
     brand = models.ForeignKey('Brand')
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("profile", "brand")
 
 

@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='UserProfile',
+            name='Profile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
@@ -37,12 +37,16 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='affinity',
-            name='brand_id',
+            name='brand',
             field=models.ForeignKey(to='core.Brand'),
         ),
         migrations.AddField(
             model_name='affinity',
-            name='profile_id',
-            field=models.ForeignKey(to='core.UserProfile'),
+            name='profile',
+            field=models.ForeignKey(to='core.Profile'),
+        ),
+        migrations.AlterUniqueTogether(
+            name='affinity',
+            unique_together=set([('profile', 'brand')]),
         ),
     ]
