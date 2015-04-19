@@ -88,7 +88,7 @@ if not LOCAL_DEV:
         'default': dj_database_url.config()
     }
     # Enable Connection Pooling
-    DATABASES['default']['ENGINE'] = 'django_postgrespool'
+    # DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
 os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
 os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
