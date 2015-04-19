@@ -10,6 +10,18 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_variable(var_name, default):
+    """ Get the environment variable or return exception """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        if default is not None:
+            return default
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -20,7 +32,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'l=t-3hz06-xzc(xgys6hgwn=8q3!xdwqz3o=*m!%kqrxii=^=d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_env_variable('DJANGO_DEBUG', 'False') == 'True'
+LOCAL_DEV = get_env_variable('DJANGO_LOCAL_DEV', 'True') == 'True'
 
 TEMPLATE_DEBUG = True
 
@@ -69,6 +82,42 @@ DATABASES = {
     }
 }
 
+if not LOCAL_DEV:
+    DATABASES = {
+        'default': dj_database_url.config()
+    }
+
+os.environ['MEMCACHE_SERVERS'] = os.environ.get('MEMCACHIER_SERVERS', '').replace(',', ';')
+os.environ['MEMCACHE_USERNAME'] = os.environ.get('MEMCACHIER_USERNAME', '')
+os.environ['MEMCACHE_PASSWORD'] = os.environ.get('MEMCACHIER_PASSWORD', '')
+
+if LOCAL_DEV:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'OPTIONS': {
+                'MAX_ENTRIES': 10000
+            }
+        }
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+            'BINARY': False,
+            'LOCATION': 'localhost:11211',
+            'OPTIONS': {
+                'no_block': True,
+                'tcp_nodelay': True,
+                'tcp_keepalive': True,
+                'remove_failed': 4,
+                'retry_timeout': 2,
+                'dead_timeout': 10,
+                '_poll_timeout': 2000
+            }
+        }
+    }
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -99,13 +148,14 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'simple',
+            'level': 'DEBUG'
         },
     },
     'loggers': {
         'django.db.backends': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
         # Catch All Logger -- Captures any other logging
@@ -116,3 +166,6 @@ LOGGING = {
         }
     },
 }
+
+BRAND_CACHE_FORMAT_STRING = 'brand_%s'
+PROFILE_CACHE_FORMAT_STRING = 'profile_%s'
