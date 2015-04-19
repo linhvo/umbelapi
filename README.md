@@ -97,7 +97,7 @@ curl requests. For model schemas, please refer to swagger docs
     + Output: 201 status if the profile is created successfully. The profile is returned in response body
     + Curl: 
         
-        curl 'http://127.0.0.1:8000/api/v1/profiles/' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
+            curl 'http://127.0.0.1:8000/api/v1/profiles/' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
 
 2. List all brand affinities of a profile
     + Method: GET
@@ -110,7 +110,7 @@ curl requests. For model schemas, please refer to swagger docs
         + Error: 404 status code with 'Not Found' detail message if the profile doesn't exist
     + Curl: 
         
-        curl 'http://127.0.0.1:8000/api/v1/affinities/?profile_id=1' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
+            curl 'http://127.0.0.1:8000/api/v1/affinities/?profile_id=1' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
 
 3. List all brand affinities of a brand
     + Method: GET
@@ -122,7 +122,7 @@ curl requests. For model schemas, please refer to swagger docs
         + Error: 404 status code with 'Not Found' detail message if the brand doesn't exist
     + Curl: 
         
-        curl 'http://127.0.0.1:8000/api/v1/affinities/?brand_id=1' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
+            curl 'http://127.0.0.1:8000/api/v1/affinities/?brand_id=1' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
 
 4. Create affinity
     + Method: POST
@@ -137,7 +137,7 @@ curl requests. For model schemas, please refer to swagger docs
             + If there has been an affinity between the provided brand & profile
     + Curl: 
         
-        curl 'http://localhost:8000/api/v1/affinities/' -H 'Content-Type: application/json' -H 'Accept: */*' --data-binary '{"profile":20, "brand":2}' --compressed
+            curl 'http://localhost:8000/api/v1/affinities/' -H 'Content-Type: application/json' -H 'Accept: */*' --data-binary '{"profile":20, "brand":2}' --compressed
 
 5. Delete affinity
     + Method: DELETE
@@ -150,7 +150,7 @@ curl requests. For model schemas, please refer to swagger docs
         + Error: 404 status code with 'Not Found' detail message if the id is invali
     + Curl: 
         
-        curl 'http://localhost:8000/api/v1/affinities/49474/'
+            curl 'http://localhost:8000/api/v1/affinities/49474/'
          
 ## Caching
  
