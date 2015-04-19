@@ -5,3 +5,8 @@ drf-extensions==0.2.7
 pylibmc==1.4.2
 dj-database-url==0.3.0
 django-pylibmc==0.5.0
+docopt==0.4.0
+gunicorn==19.1.1
+whitenoise==1.0.6
+wsgiref==0.1.2
+django-postgrespool==0.3.0
