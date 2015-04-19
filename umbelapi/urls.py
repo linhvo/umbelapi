@@ -13,7 +13,7 @@ router.register(r'affinities', AffinityViewSet, base_name='affinity')
 
 
 urlpatterns = patterns('',
-
+    url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/v1/', include(router.urls)),
 )

@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_swagger',
     'core',
     'umbelapi'
 )
@@ -77,9 +78,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'umbelapi',
-        'USER': os.environ.get('USER_NAME'),
-        'PASSWORD': os.environ.get('PASSWORD'),
-        'HOST': os.environ.get('HOST')
+        'USER': 'umbel',
+        'PASSWORD': '',
+        'HOST': 'localhost'
     }
 }
 
@@ -176,3 +177,7 @@ LOGGING = {
 
 BRAND_CACHE_FORMAT_STRING = 'brand_%s'
 PROFILE_CACHE_FORMAT_STRING = 'profile_%s'
+
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 2592000  # 30 days
+}

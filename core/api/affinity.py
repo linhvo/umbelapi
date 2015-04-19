@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 class AffinitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Affinity
-        fields = ('id', 'profile', 'brand')
+        fields = ('id', 'profile', 'brand', 'created')
 
 
 class ModelLastUpdateKeyBit(KeyBitBase):
