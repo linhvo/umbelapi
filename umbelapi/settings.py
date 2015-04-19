@@ -107,8 +107,7 @@ else:
     CACHES = {
         'default': {
             'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
-            'BINARY': False,
-            'LOCATION': 'localhost:11211',
+            'BINARY': True,
             'OPTIONS': {
                 'no_block': True,
                 'tcp_nodelay': True,
