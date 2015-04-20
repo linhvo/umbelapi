@@ -142,7 +142,7 @@ curl requests. For model schemas, please refer to swagger docs
             + If there has been an affinity between the provided brand & profile
     + Curl: 
         
-            curl 'http://umbel-api.herokuapp.com/api/v1/affinities/' -X GET -H 'Content-Type: application/json' -H 'Accept: */*' --data-binary '{"profile":20, "brand":2}' --compressed
+            curl 'http://umbel-api.herokuapp.com/api/v1/affinities/' -X POST -H 'Content-Type: application/json' -H 'Accept: */*' --data-binary '{"profile":20, "brand":2}' --compressed
 
 5. Delete affinity
     + Method: DELETE
