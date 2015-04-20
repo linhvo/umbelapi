@@ -23,7 +23,7 @@ This project implements profile and brand affinity API. The following API are im
 
 ### Steps
 
-1. Clone the project from bitbucket
+1. Clone the project from github
 
         git clone git@github.com:linhvo/umbelapi.git
     
@@ -42,7 +42,7 @@ This project implements profile and brand affinity API. The following API are im
         
 4. Database setup
 
-    We use postgres for local environment as well as in heroku.
+    PosgreSQL is used for local environment as well as in heroku.
      
     + Run the following commands in psql console to create postgres user & database
         
@@ -69,12 +69,17 @@ each user. To run
         python manage.py populate_affinities
    
 6. Run
+
+    You can use Chrome Extension: Postman app to test the API
     
         DJANGO_DEBUG=True python manage.py runserver
         
+        
+        
 ## Test on Heroku
 
-The project is deployed to heroku for testing convenience. The app url is http://umbel-api.herokuapp.com
+The project is deployed to heroku for testing convenience. The app url is: 
+[http://umbel-api.herokuapp.com](http://umbel-api.herokuapp.com)
 
 ## Unit Test
 
@@ -97,7 +102,7 @@ curl requests. For model schemas, please refer to swagger docs
     + Output: 201 status if the profile is created successfully. The profile is returned in response body
     + Curl: 
         
-            curl 'http://127.0.0.1:8000/api/v1/profiles/' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
+            curl 'http://umbel-api.herokuapp.com/api/v1/profiles/' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
 
 2. List all brand affinities of a profile
     + Method: GET
@@ -110,7 +115,7 @@ curl requests. For model schemas, please refer to swagger docs
         + Error: 404 status code with 'Not Found' detail message if the profile doesn't exist
     + Curl: 
         
-            curl 'http://127.0.0.1:8000/api/v1/affinities/?profile_id=1' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
+            curl 'http://umbel-api.herokuapp.com/api/v1/affinities/?profile_id=1' -X GET -H 'Content-Type: application/json' -H 'Accept: */*'
 
 3. List all brand affinities of a brand
     + Method: GET
@@ -122,7 +127,7 @@ curl requests. For model schemas, please refer to swagger docs
         + Error: 404 status code with 'Not Found' detail message if the brand doesn't exist
     + Curl: 
         
-            curl 'http://127.0.0.1:8000/api/v1/affinities/?brand_id=1' -X POST -H 'Content-Type: application/json' -H 'Accept: */*'
+            curl 'http://umbel-api.herokuapp.com/api/v1/affinities/?brand_id=1' -X GET -H 'Content-Type: application/json' -H 'Accept: */*'
 
 4. Create affinity
     + Method: POST
@@ -137,7 +142,7 @@ curl requests. For model schemas, please refer to swagger docs
             + If there has been an affinity between the provided brand & profile
     + Curl: 
         
-            curl 'http://localhost:8000/api/v1/affinities/' -H 'Content-Type: application/json' -H 'Accept: */*' --data-binary '{"profile":20, "brand":2}' --compressed
+            curl 'http://umbel-api.herokuapp.com/api/v1/affinities/' -X GET -H 'Content-Type: application/json' -H 'Accept: */*' --data-binary '{"profile":20, "brand":2}' --compressed
 
 5. Delete affinity
     + Method: DELETE
@@ -150,12 +155,12 @@ curl requests. For model schemas, please refer to swagger docs
         + Error: 404 status code with 'Not Found' detail message if the id is invali
     + Curl: 
         
-            curl 'http://localhost:8000/api/v1/affinities/49474/'
+            curl -X DELETE 'http://umbel-api.herokuapp.com/api/v1/affinities/49474/'
          
 ## Caching
  
 Both read-only api are cached with 30 days timeout. With a long timeout, a robust cache invalidation scheme is required.
-Besides Django Rest Framework, we use drf-extensions for its caching mechanism. All three models in our api have
+Besides Django Rest Framework, drf-extensions is used for its caching mechanism. All three models in the api have
 post-save signals (Affinity also has post-delete) to automatically invalidate the correct cache.
 
 ### Cache Key Construction
@@ -164,8 +169,8 @@ drf-extensions allows very flexible cache key construction but post-save signal 
 it doesn't run as part of an API HTTP request so it doesn't have access to HTTP request object that is required for
 cache key construction. 
 
-To invalidate cached request, we actually make the next request to construct a different key compared to its previous 
-cache key. This allows us to invalidate the cache without actually clearing the old cache. We include a custom key bit 
+To invalidate cached request, next request is made to construct a different key compared to its previous 
+cache key. This allows invalidate the cache without actually clearing the old cache. A custom key bit is included
 that read from an agreed-upon cache location and use the value stored in that location as part of the cache key. The 
 value can be anything. For our purpose, it is set to current timestamp.
 
@@ -198,6 +203,6 @@ these 2 special locations whenever any profile or brand is updated
 3. Since unique id is just the auto-incremented database PK, anyone can delete all affinities. To fix this, we'd need
 to have authorization or at the least, use GUID in the API request
 4. I decided to not include full profile and brand json in the affinity object. Only brand id, profile id, affinity id 
-and its created timestamp are included. I played around with nested relationships as detailed here http://www.django-rest-framework.org/api-guide/relations/#nested-relationships
+and its created timestamp are included. I played around with nested relationships as detailed [HERE](http://www.django-rest-framework.org/api-guide/relations/#nested-relationships)
 but I would have to override create method because nested relationships are read-only.
 5. Timeout could have been infinite because we have automatic cache invalidation
